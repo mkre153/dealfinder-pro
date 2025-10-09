@@ -1,0 +1,79 @@
+{
+  "field_mappings": {
+    "property_id": "Property ID",
+    "mls_number": "MLS#",
+    "street_address": "Address",
+    "city": "City",
+    "state": "State",
+    "zip_code": "ZIP",
+    "county": "County",
+    "list_price": "Price",
+    "bedrooms": "Beds",
+    "bathrooms": "Baths",
+    "square_feet": "SqFt",
+    "lot_size_sqft": "Lot Size",
+    "year_built": "Year Built",
+    "property_type": "Type",
+    "listing_date": "List Date",
+    "days_on_market": "DOM",
+    "status": "Status",
+    "listing_agent_name": "Agent",
+    "listing_agent_phone": "Agent Phone",
+    "description": "Description",
+    "hoa_fee": "HOA",
+    "garage_spaces": "Garage",
+    "pool": "Pool",
+    "latitude": "Latitude",
+    "longitude": "Longitude"
+  },
+  "alternate_mappings": {
+    "street_address": ["Address", "Street Address", "Property Address", "Street"],
+    "list_price": ["Price", "List Price", "Asking Price", "Sale Price"],
+    "bedrooms": ["Beds", "Bedrooms", "BR", "Bed"],
+    "bathrooms": ["Baths", "Bathrooms", "BA", "Bath"],
+    "square_feet": ["SqFt", "Square Feet", "Sq Ft", "SF", "Living Area"],
+    "lot_size_sqft": ["Lot Size", "Lot SqFt", "Lot Square Feet"],
+    "year_built": ["Year Built", "Year", "Built"],
+    "property_type": ["Type", "Property Type", "Prop Type"],
+    "mls_number": ["MLS#", "MLS", "MLS Number", "Listing ID"],
+    "days_on_market": ["DOM", "Days on Market", "Days On Mkt"]
+  },
+  "data_types": {
+    "list_price": "float",
+    "bedrooms": "int",
+    "bathrooms": "float",
+    "square_feet": "int",
+    "lot_size_sqft": "int",
+    "year_built": "int",
+    "days_on_market": "int",
+    "hoa_fee": "float",
+    "garage_spaces": "int",
+    "latitude": "float",
+    "longitude": "float"
+  },
+  "skip_headers": true,
+  "delimiter": ",",
+  "encoding": "utf-8",
+  "date_format": "%Y-%m-%d",
+  "alternate_date_formats": [
+    "%m/%d/%Y",
+    "%d-%m-%Y",
+    "%Y/%m/%d"
+  ],
+  "price_cleaning": {
+    "remove_chars": ["$", ","],
+    "handle_k": true,
+    "handle_m": true
+  },
+  "boolean_mappings": {
+    "pool": {
+      "true_values": ["Yes", "Y", "TRUE", "1", "Pool"],
+      "false_values": ["No", "N", "FALSE", "0", "None", ""]
+    }
+  },
+  "notes": {
+    "description": "Generic CSV field mappings with common variations",
+    "usage": "Automatically tries alternate field names if primary mapping not found",
+    "price_cleaning_example": "$1,250,000 -> 1250000, 1.5M -> 1500000, 250K -> 250000"
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "contact_fields": {
+    "budget_min": "customField.budget_min",
+    "budget_max": "customField.budget_max",
+    "location_preference": "customField.location_preference",
+    "property_type_preference": "customField.property_type_preference",
+    "min_bedrooms": "customField.min_bedrooms",
+    "buyer_status": "customField.buyer_status",
+    "sms_opt_in": "tag.sms_opt_in",
+    "last_contact_date": "customField.last_contact_date",
+    "preferred_contact_method": "customField.preferred_contact_method"
+  },
+  "opportunity_fields": {
+    "property_address": "customField.property_address",
+    "deal_score": "customField.deal_score",
+    "list_price": "customField.list_price",
+    "est_profit": "customField.est_profit",
+    "mls_id": "customField.mls_id",
+    "price_per_sqft": "customField.price_per_sqft",
+    "below_market_pct": "customField.below_market_pct",
+    "days_on_market": "customField.days_on_market",
+    "deal_quality": "customField.deal_quality",
+    "estimated_arv": "customField.estimated_arv",
+    "bedrooms": "customField.bedrooms",
+    "bathrooms": "customField.bathrooms",
+    "sqft": "customField.sqft",
+    "year_built": "customField.year_built",
+    "property_type": "customField.property_type"
+  },
+  "required_contact_fields": [
+    "budget_min",
+    "budget_max"
+  ],
+  "required_opportunity_fields": [
+    "property_address",
+    "deal_score",
+    "list_price"
+  ],
+  "pipeline_stages": {
+    "new_lead": "New Lead",
+    "priority_review": "Priority Review",
+    "showing_scheduled": "Showing Scheduled",
+    "offer_submitted": "Offer Submitted",
+    "under_contract": "Under Contract",
+    "closed_won": "Closed - Won",
+    "closed_lost": "Closed - Lost"
+  },
+  "workflows": {
+    "hot_deal_alert": {
+      "name": "Hot Deal Alert",
+      "description": "Triggered for properties scoring 90+ to alert team immediately",
+      "trigger_score_threshold": 90
+    },
+    "property_match": {
+      "name": "Property Match Notification",
+      "description": "Triggered when property matches buyer criteria",
+      "trigger_match_threshold": 70
+    },
+    "new_opportunity": {
+      "name": "New Opportunity Created",
+      "description": "Triggered when new property opportunity is created",
+      "trigger_on": "opportunity_create"
+    },
+    "showing_scheduled": {
+      "name": "Showing Follow-up",
+      "description": "Triggered when property showing is scheduled",
+      "trigger_on": "showing_scheduled"
+    }
+  },
+  "tags": {
+    "automated": "automated",
+    "dealfinder": "dealfinder",
+    "hot_deal": "hot_deal",
+    "good_deal": "good_deal",
+    "potential": "potential",
+    "active_buyer": "active_buyer",
+    "sms_opt_in": "sms_opt_in",
+    "email_opt_in": "email_opt_in"
+  },
+  "field_validation": {
+    "budget_min": {
+      "type": "number",
+      "min": 0,
+      "required": true
+    },
+    "budget_max": {
+      "type": "number",
+      "min": 0,
+      "required": true
+    },
+    "location_preference": {
+      "type": "text",
+      "max_length": 500,
+      "description": "Comma-separated list of cities or ZIP codes"
+    },
+    "property_type_preference": {
+      "type": "text",
+      "max_length": 200,
+      "description": "Comma-separated list: single_family, multi_family, condo, townhouse"
+    },
+    "min_bedrooms": {
+      "type": "number",
+      "min": 0,
+      "max": 20
+    },
+    "deal_score": {
+      "type": "number",
+      "min": 0,
+      "max": 100,
+      "required": true
+    },
+    "list_price": {
+      "type": "number",
+      "min": 0,
+      "required": true
+    }
+  },
+  "notification_settings": {
+    "sms": {
+      "quiet_hours_start": 21,
+      "quiet_hours_end": 8,
+      "max_per_buyer_per_day": 3,
+      "char_limit": 160
+    },
+    "email": {
+      "enabled": true,
+      "include_property_images": true
+    }
+  },
+  "rate_limiting": {
+    "max_requests_per_minute": 95,
+    "time_window_seconds": 60,
+    "retry_attempts": 3,
+    "backoff_strategy": "exponential"
+  },
+  "cache_settings": {
+    "buyer_cache_duration_minutes": 60,
+    "custom_fields_cache_duration_minutes": 1440,
+    "pipeline_stages_cache_duration_minutes": 1440
+  }
+}

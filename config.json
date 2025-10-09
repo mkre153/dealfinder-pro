@@ -1,0 +1,217 @@
+{
+  "search_criteria": {
+    "target_locations": [
+      "92101", "92103", "92037", "92106", "92107", "92109",
+      "92130", "92131", "92014", "92075", "92104", "92108",
+      "92110", "92111", "92115", "92116", "92117", "92122",
+      "89101", "89104", "89109", "89134", "89135", "89144",
+      "89147", "89148", "89052", "89074", "89044", "89002",
+      "89102", "89103", "89108", "89113", "89117", "89128"
+    ],
+    "county_groups": {
+      "san_diego": {
+        "name": "San Diego County, CA",
+        "zips": ["92101", "92103", "92037", "92106", "92107", "92109", "92130", "92131", "92014", "92075", "92104", "92108", "92110", "92111", "92115", "92116", "92117", "92122"],
+        "enabled": true
+      },
+      "clark": {
+        "name": "Clark County, NV (Las Vegas)",
+        "zips": ["89101", "89104", "89109", "89134", "89135", "89144", "89147", "89148", "89052", "89074", "89044", "89002", "89102", "89103", "89108", "89113", "89117", "89128"],
+        "enabled": true
+      }
+    },
+    "listing_type": "for_sale",
+    "days_back": 30,
+    "property_types": [
+      "single_family",
+      "multi_family",
+      "condo",
+      "townhouse",
+      "land"
+    ],
+    "min_bedrooms": 2,
+    "min_bathrooms": 2,
+    "price_range": {
+      "min": 500000,
+      "max": 1500000
+    }
+  },
+  "undervalued_criteria": {
+    "price_per_sqft_below_market_pct": 15,
+    "days_on_market_minimum": 30,
+    "price_reduction_minimum": 10000,
+    "min_cap_rate": 6.0,
+    "min_cash_on_cash_return": 8.0,
+    "tax_assessment_gap_pct": 20,
+    "min_opportunity_score": 75,
+    "distressed_keywords": [
+      "motivated seller",
+      "as-is",
+      "needs work",
+      "fixer",
+      "fixer upper",
+      "estate sale",
+      "must sell",
+      "bring all offers",
+      "tlc",
+      "handyman special",
+      "cash only",
+      "investor opportunity",
+      "price reduced",
+      "motivated",
+      "bring offers",
+      "investor special"
+    ]
+  },
+  "scoring_weights": {
+    "price_advantage": 30,
+    "days_on_market": 20,
+    "financial_returns": 25,
+    "condition_price": 15,
+    "location_quality": 10
+  },
+  "gohighlevel": {
+    "enabled": true,
+    "api_version": "v1",
+    "base_url": "https://rest.gohighlevel.com/v1",
+    "automation_rules": {
+      "auto_create_opportunity": true,
+      "min_score_for_opportunity": 75,
+      "auto_trigger_hot_deal_workflow": true,
+      "hot_deal_threshold": 90,
+      "auto_match_buyers": true,
+      "auto_send_sms": false,
+      "auto_create_tasks": true
+    },
+    "workflow_ids": {
+      "hot_deal_alert": "WORKFLOW_ID_1",
+      "buyer_match_notification": "WORKFLOW_ID_2",
+      "follow_up_sequence": "WORKFLOW_ID_3"
+    },
+    "pipeline_id": "PIPELINE_ID",
+    "pipeline_stage_new": "STAGE_ID_NEW",
+    "pipeline_stage_reviewing": "STAGE_ID_REVIEWING",
+    "pipeline_stage_hot": "STAGE_ID_HOT"
+  },
+  "databases": {
+    "primary": {
+      "type": "postgresql",
+      "enabled": true,
+      "host": "localhost",
+      "port": 5432,
+      "database": "dealfinder",
+      "min_connections": 2,
+      "max_connections": 10
+    },
+    "mls_database": {
+      "enabled": false,
+      "type": "sqlserver",
+      "host": "mls.example.com",
+      "port": 1433,
+      "database": "MLS_Listings",
+      "timeout": 30,
+      "tables": {
+        "listings": "dbo.Listings",
+        "agents": "dbo.Agents"
+      }
+    }
+  },
+  "notifications": {
+    "email": {
+      "enabled": true,
+      "smtp_server": "smtp.gmail.com",
+      "smtp_port": 587,
+      "sender": "dealfinder@yourdomain.com",
+      "recipient": "mkre153@gmail.com",
+      "include_excel_attachment": true,
+      "send_daily_summary": true,
+      "send_hot_deal_alerts": true,
+      "send_weekly_digest": true,
+      "weekly_digest_day": "sunday",
+      "weekly_digest_time": "18:00"
+    },
+    "sms": {
+      "enabled": true,
+      "via_ghl": false,
+      "via_twilio": true,
+      "broker_phone": "",
+      "hot_deal_only": true,
+      "send_daily_summary": true,
+      "format": "concise",
+      "quiet_hours_start": "22:00",
+      "quiet_hours_end": "06:00"
+    },
+    "thresholds": {
+      "min_score_for_email": 75,
+      "min_score_for_sms": 90,
+      "min_below_market_for_alert": 20,
+      "min_deals_for_notification": 1
+    },
+    "webhook": {
+      "enabled": false,
+      "url": "https://your-webhook-endpoint.com/dealfinder",
+      "events": [
+        "hot_deal",
+        "property_matched",
+        "workflow_complete"
+      ]
+    }
+  },
+  "data_sources": {
+    "realtor_com": {
+      "enabled": true,
+      "rate_limit_delay": 2,
+      "max_retries": 3,
+      "timeout": 30
+    },
+    "zillow": {
+      "enabled": false,
+      "api_key_required": true
+    },
+    "attom_data": {
+      "enabled": false,
+      "api_key_required": true
+    }
+  },
+  "analysis": {
+    "rental_estimates": {
+      "use_rentometer": false,
+      "use_zillow": false,
+      "fallback_multiplier": 0.008
+    },
+    "arv_calculation": {
+      "comp_radius_miles": 1.0,
+      "comp_max_age_days": 180,
+      "min_comps_required": 3
+    },
+    "market_data": {
+      "cache_duration_hours": 24,
+      "zip_code_stats_enabled": true
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "console_output": true,
+    "file_output": true,
+    "log_rotation_days": 30,
+    "detailed_errors": true
+  },
+  "scheduling": {
+    "enabled": true,
+    "scan_times": [
+      {"time": "06:00", "enabled": true, "label": "Morning Scan"},
+      {"time": "10:00", "enabled": true, "label": "Mid-Morning Scan"},
+      {"time": "14:00", "enabled": true, "label": "Afternoon Scan"}
+    ],
+    "timezone": "America/Los_Angeles",
+    "retry_on_failure": true,
+    "max_retries": 3,
+    "skip_weekends": false,
+    "skip_holidays": false
+  },
+  "performance": {
+    "max_concurrent_scrapes": 5,
+    "batch_size_analysis": 50,
+    "database_batch_insert": 100
+  }
+}

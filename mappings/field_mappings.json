@@ -1,0 +1,310 @@
+{
+  "version": "1.0",
+  "description": "Field mappings for external data sources to DealFinder Pro internal schema",
+  "required_fields": [
+    "property_id",
+    "street_address",
+    "city",
+    "state",
+    "zip_code",
+    "list_price"
+  ],
+  "mappings": {
+    "realtor": {
+      "description": "HomeHarvest / Realtor.com data mapping",
+      "property_id": "property_id",
+      "mls_number": "mls",
+      "street_address": "full_street_line",
+      "city": "city",
+      "state": "state_code",
+      "zip_code": "postal_code",
+      "county": "county",
+      "latitude": "lat",
+      "longitude": "lon",
+      "property_type": "type",
+      "bedrooms": "beds",
+      "bathrooms": "baths",
+      "square_feet": "sqft",
+      "lot_size_sqft": "lot_sqft",
+      "year_built": "year_built",
+      "stories": "stories",
+      "garage_spaces": "garage",
+      "list_price": "list_price",
+      "price_per_sqft": "price_per_sqft",
+      "listing_date": "list_date",
+      "days_on_market": "days_on_mls",
+      "description": "description",
+      "listing_agent_name": "agent_name",
+      "listing_agent_phone": "agent_phone",
+      "listing_agent_email": "agent_email"
+    },
+    "mls": {
+      "description": "MLS database (RETS/WebAPI) mapping",
+      "property_id": "ListingKey",
+      "mls_number": "ListingId",
+      "street_address": "UnparsedAddress",
+      "city": "City",
+      "state": "StateOrProvince",
+      "zip_code": "PostalCode",
+      "county": "CountyOrParish",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "property_type": "PropertyType",
+      "bedrooms": "BedroomsTotal",
+      "bathrooms": "BathroomsTotalInteger",
+      "square_feet": "LivingArea",
+      "lot_size_sqft": "LotSizeSquareFeet",
+      "year_built": "YearBuilt",
+      "stories": "StoriesTotal",
+      "garage_spaces": "GarageSpaces",
+      "list_price": "ListPrice",
+      "previous_price": "PreviousListPrice",
+      "listing_date": "ListingContractDate",
+      "days_on_market": "DaysOnMarket",
+      "description": "PublicRemarks",
+      "listing_agent_name": "ListAgentFullName",
+      "listing_agent_phone": "ListAgentDirectPhone",
+      "listing_agent_email": "ListAgentEmail",
+      "listing_brokerage": "ListOfficeName",
+      "tax_assessed_value": "TaxAssessedValue",
+      "annual_taxes": "TaxAnnualAmount"
+    },
+    "csv": {
+      "description": "Generic CSV import mapping (supports multiple column name variations)",
+      "property_id": [
+        "property_id",
+        "id",
+        "PropertyID",
+        "ID",
+        "listing_id"
+      ],
+      "mls_number": [
+        "mls",
+        "mls_number",
+        "MLS",
+        "MLS_Number",
+        "MLSNumber"
+      ],
+      "street_address": [
+        "address",
+        "street_address",
+        "Address",
+        "FullAddress",
+        "Street"
+      ],
+      "city": [
+        "city",
+        "City"
+      ],
+      "state": [
+        "state",
+        "State"
+      ],
+      "zip_code": [
+        "zip",
+        "zip_code",
+        "postal_code",
+        "ZipCode",
+        "PostalCode"
+      ],
+      "county": [
+        "county",
+        "County"
+      ],
+      "latitude": [
+        "lat",
+        "latitude",
+        "Latitude"
+      ],
+      "longitude": [
+        "lon",
+        "lng",
+        "longitude",
+        "Longitude"
+      ],
+      "property_type": [
+        "type",
+        "property_type",
+        "PropertyType",
+        "Type"
+      ],
+      "bedrooms": [
+        "beds",
+        "bedrooms",
+        "Beds",
+        "Bedrooms"
+      ],
+      "bathrooms": [
+        "baths",
+        "bathrooms",
+        "Baths",
+        "Bathrooms"
+      ],
+      "square_feet": [
+        "sqft",
+        "square_feet",
+        "SqFt",
+        "SquareFeet",
+        "LivingArea"
+      ],
+      "lot_size_sqft": [
+        "lot_size",
+        "lot_sqft",
+        "LotSize",
+        "LotSqFt"
+      ],
+      "year_built": [
+        "year_built",
+        "year",
+        "YearBuilt",
+        "Year"
+      ],
+      "list_price": [
+        "price",
+        "list_price",
+        "Price",
+        "ListPrice",
+        "asking_price"
+      ],
+      "price_per_sqft": [
+        "price_per_sqft",
+        "price_sqft",
+        "PricePerSqFt"
+      ],
+      "days_on_market": [
+        "dom",
+        "days_on_market",
+        "DOM",
+        "DaysOnMarket"
+      ],
+      "description": [
+        "description",
+        "Description",
+        "remarks",
+        "Remarks"
+      ]
+    },
+    "zillow": {
+      "description": "Zillow API data mapping (future integration)",
+      "property_id": "zpid",
+      "street_address": "address.streetAddress",
+      "city": "address.city",
+      "state": "address.state",
+      "zip_code": "address.zipcode",
+      "latitude": "latitude",
+      "longitude": "longitude",
+      "property_type": "homeType",
+      "bedrooms": "bedrooms",
+      "bathrooms": "bathrooms",
+      "square_feet": "livingArea",
+      "lot_size_sqft": "lotAreaValue",
+      "year_built": "yearBuilt",
+      "list_price": "price",
+      "tax_assessed_value": "taxAssessedValue",
+      "annual_taxes": "taxAssessedYear",
+      "description": "description"
+    }
+  },
+  "type_conversions": {
+    "integer_fields": [
+      "bedrooms",
+      "year_built",
+      "stories",
+      "garage_spaces",
+      "square_feet",
+      "lot_size_sqft",
+      "days_on_market",
+      "opportunity_score"
+    ],
+    "decimal_fields": [
+      "bathrooms",
+      "list_price",
+      "price_per_sqft",
+      "previous_price",
+      "price_reduction_amount",
+      "tax_assessed_value",
+      "annual_taxes",
+      "hoa_fee",
+      "latitude",
+      "longitude",
+      "below_market_percentage",
+      "estimated_market_value",
+      "estimated_profit",
+      "cap_rate",
+      "cash_on_cash_return"
+    ],
+    "boolean_fields": [
+      "sms_opt_in",
+      "sms_sent",
+      "workflow_triggered",
+      "task_created"
+    ],
+    "timestamp_fields": [
+      "listing_date",
+      "price_reduction_date",
+      "analysis_date",
+      "ghl_sync_date",
+      "last_synced_at",
+      "created_at",
+      "updated_at"
+    ],
+    "array_fields": [
+      "features",
+      "keywords",
+      "tags",
+      "preferred_locations",
+      "property_types",
+      "match_reasons"
+    ]
+  },
+  "property_type_normalization": {
+    "single_family": [
+      "single family",
+      "single-family",
+      "sfh",
+      "house",
+      "detached"
+    ],
+    "multi_family": [
+      "multi family",
+      "multi-family",
+      "multifamily",
+      "duplex",
+      "triplex",
+      "fourplex",
+      "2-4 units"
+    ],
+    "condo": [
+      "condo",
+      "condominium"
+    ],
+    "townhouse": [
+      "townhouse",
+      "townhome",
+      "town house"
+    ],
+    "apartment": [
+      "apartment",
+      "apt"
+    ],
+    "land": [
+      "land",
+      "lot",
+      "vacant land"
+    ],
+    "commercial": [
+      "commercial",
+      "retail",
+      "office",
+      "industrial"
+    ]
+  },
+  "default_values": {
+    "ghl_sync_status": "pending",
+    "buyer_status": "active",
+    "sms_opt_in": false,
+    "sms_sent": false,
+    "workflow_triggered": false,
+    "task_created": false
+  }
+}

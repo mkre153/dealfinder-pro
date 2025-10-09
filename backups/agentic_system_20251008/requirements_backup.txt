@@ -1,0 +1,99 @@
+# DealFinder Pro - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# ========================================
+# CORE DEPENDENCIES
+# ========================================
+python-dotenv>=1.0.0          # Environment variable management
+requests>=2.31.0              # HTTP requests
+
+# ========================================
+# WEB SCRAPING
+# ========================================
+beautifulsoup4>=4.12.0        # HTML parsing
+selenium>=4.15.0              # Browser automation
+webdriver-manager>=4.0.0      # Automatic WebDriver management
+lxml>=4.9.0                   # XML/HTML parser
+
+# ========================================
+# DATABASE
+# ========================================
+psycopg2-binary>=2.9.9        # PostgreSQL adapter
+pymysql>=1.1.0                # MySQL connector (alternative)
+sqlalchemy>=2.0.0             # ORM (optional, for advanced queries)
+
+# For SQL Server MLS integration (optional)
+# pyodbc>=5.0.0               # SQL Server connector
+
+# ========================================
+# DATA PROCESSING
+# ========================================
+pandas>=2.1.0                 # Data manipulation
+numpy>=1.26.0                 # Numerical computing
+openpyxl>=3.1.0              # Excel file handling
+
+# ========================================
+# REPORTING & TEMPLATES
+# ========================================
+jinja2>=3.1.2                # HTML templating for emails
+
+# ========================================
+# NOTIFICATIONS
+# ========================================
+# Twilio (optional - for SMS if not using GHL)
+# twilio>=8.10.0
+
+# ========================================
+# AGENTIC SYSTEM (AI/ML)
+# ========================================
+anthropic>=0.18.0            # Claude AI (recommended)
+openai>=1.10.0               # OpenAI GPT-4 (alternative)
+# chromadb>=0.4.0            # Vector database for semantic memory (optional)
+# sentence-transformers>=2.2.0  # For embeddings (optional)
+
+# ========================================
+# API INTEGRATIONS
+# ========================================
+# For enhanced data enrichment (all optional)
+# googlemaps>=4.10.0          # Google Maps API
+# geopy>=2.4.0                # Geocoding
+
+# ========================================
+# UTILITIES
+# ========================================
+python-dateutil>=2.8.2        # Date/time utilities
+pytz>=2023.3                  # Timezone support
+
+# ========================================
+# TESTING (Development only)
+# ========================================
+pytest>=7.4.0                 # Testing framework
+pytest-cov>=4.1.0            # Code coverage
+pytest-mock>=3.12.0          # Mocking for tests
+faker>=20.0.0                # Generate test data
+
+# ========================================
+# CODE QUALITY (Development only)
+# ========================================
+black>=23.11.0               # Code formatting
+flake8>=6.1.0                # Linting
+pylint>=3.0.0                # Advanced linting
+mypy>=1.7.0                  # Type checking
+
+# ========================================
+# DEPLOYMENT
+# ========================================
+gunicorn>=21.2.0             # WSGI server (if deploying as web service)
+supervisor>=4.2.5            # Process management
+
+# ========================================
+# SCHEDULER (Optional)
+# ========================================
+schedule>=1.2.0              # Job scheduling (alternative to cron)
+# APScheduler>=3.10.0        # Advanced scheduling
+
+# ========================================
+# MONITORING (Optional)
+# ========================================
+# sentry-sdk>=1.38.0         # Error tracking
+# prometheus-client>=0.19.0  # Metrics collection

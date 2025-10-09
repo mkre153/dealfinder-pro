@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .property-card {
+            border: 1px solid #e0e0e0;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 8px;
+            background: white;
+            font-family: Arial, sans-serif;
+        }
+        .property-card.hot-deal {
+            border-left: 5px solid #dc3545;
+            background: #fff5f5;
+        }
+        .property-card.good-deal {
+            border-left: 5px solid #28a745;
+            background: #f5fff5;
+        }
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4472C4;
+            margin-bottom: 10px;
+        }
+        .address {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin: 10px 0;
+        }
+        .price {
+            color: #4472C4;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        .details {
+            margin: 15px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .detail-row {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .label {
+            color: #666;
+            font-weight: normal;
+        }
+        .value {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="property-card {% if property.opportunity_score >= 90 %}hot-deal{% elif property.opportunity_score >= 75 %}good-deal{% endif %}">
+        <div class="score">Score: {{ property.opportunity_score }}/100 - {{ property.deal_quality }}</div>
+        <div class="address">{{ property.street_address }}, {{ property.city }}</div>
+        <div class="price">${{ "{:,.0f}".format(property.list_price) }}</div>
+
+        <div class="details">
+            <div class="detail-row"><span class="label">Beds/Baths:</span> <span class="value">{{ property.bedrooms }}BR / {{ property.bathrooms }}BA</span></div>
+            <div class="detail-row"><span class="label">Square Feet:</span> <span class="value">{{ "{:,.0f}".format(property.square_feet) }} sqft</span></div>
+            <div class="detail-row"><span class="label">Below Market:</span> <span class="value" style="color: #28a745;">{{ "%.1f"|format(property.below_market_percentage) }}%</span></div>
+            <div class="detail-row"><span class="label">Est. Profit:</span> <span class="value" style="color: #28a745;">${{ "{:,.0f}".format(property.estimated_profit) }}</span></div>
+            <div class="detail-row"><span class="label">Days on Market:</span> <span class="value">{{ property.days_on_market }}</span></div>
+            <div class="detail-row"><span class="label">MLS#:</span> <span class="value">{{ property.mls_number }}</span></div>
+        </div>
+
+        {% if property.ghl_opportunity_link %}
+        <p><a href="{{ property.ghl_opportunity_link }}" style="color: #4472C4; font-weight: bold;">View in GHL →</a></p>
+        {% endif %}
+    </div>
+</body>
+</html>

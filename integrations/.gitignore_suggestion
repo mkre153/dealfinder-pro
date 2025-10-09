@@ -1,0 +1,18 @@
+# Add these lines to your .gitignore file to protect sensitive GHL configuration
+
+# GoHighLevel Configuration (contains API keys)
+integrations/ghl_config.py
+
+# GHL Logs (may contain sensitive data)
+logs/ghl*.log
+logs/ghl_integration.log
+
+# Environment files
+.env
+.env.local
+*.env
+
+# API Keys and Secrets
+**/secrets.py
+**/credentials.json
+**/api_keys.txt

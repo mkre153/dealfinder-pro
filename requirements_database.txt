@@ -1,0 +1,28 @@
+# DealFinder Pro - Database Layer Dependencies
+# Install with: pip install -r requirements_database.txt
+
+# PostgreSQL Support (recommended)
+psycopg2-binary==2.9.9
+
+# MySQL/MariaDB Support
+mysql-connector-python==8.2.0
+
+# SQLite Support (built into Python)
+# No additional packages needed
+
+# Connection Pooling & Performance
+SQLAlchemy==2.0.23
+alembic==1.13.0
+
+# Data Validation & Type Checking
+pydantic==2.5.2
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Logging
+colorlog==6.8.0
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
