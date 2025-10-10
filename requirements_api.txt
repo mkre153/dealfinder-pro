@@ -1,0 +1,59 @@
+# DealFinder Pro - FastAPI Backend Requirements
+# Install with: pip install -r requirements_api.txt
+
+# ========================================
+# FAST API & WEB FRAMEWORK
+# ========================================
+fastapi>=0.109.0            # Modern async web framework
+uvicorn[standard]>=0.27.0   # ASGI server with auto-reload
+pydantic>=2.5.0             # Data validation
+pydantic-settings>=2.1.0    # Settings management
+python-multipart>=0.0.6     # Form data parsing
+
+# ========================================
+# CORE DEPENDENCIES (from existing requirements.txt)
+# ========================================
+python-dotenv>=1.0.0        # Environment variables
+requests>=2.31.0            # HTTP requests
+anthropic>=0.39.0           # Claude AI
+APScheduler>=3.10.0         # Background job scheduling
+
+# ========================================
+# DATABASE
+# ========================================
+sqlalchemy>=2.0.0           # ORM
+psycopg2-binary>=2.9.9      # PostgreSQL (for production)
+# Note: SQLite (built-in) used for development
+
+# ========================================
+# DATA PROCESSING
+# ========================================
+pandas>=2.1.0               # Data manipulation
+numpy>=1.26.0               # Numerical computing
+
+# ========================================
+# INTEGRATIONS
+# ========================================
+beautifulsoup4>=4.12.0      # HTML parsing
+selenium>=4.15.0            # Browser automation
+webdriver-manager>=4.0.0    # WebDriver management
+homeharvest==0.3.25         # Realtor.com scraper
+
+# ========================================
+# GHL & NOTIFICATIONS
+# ========================================
+twilio>=8.10.0              # SMS (optional)
+jinja2>=3.1.2               # Email templates
+
+# ========================================
+# UTILITIES
+# ========================================
+python-dateutil>=2.8.2      # Date utilities
+pytz>=2023.3                # Timezone support
+
+# ========================================
+# DEVELOPMENT & TESTING
+# ========================================
+pytest>=7.4.0               # Testing framework
+pytest-asyncio>=0.23.0      # Async test support
+httpx>=0.26.0               # Async HTTP client for testing

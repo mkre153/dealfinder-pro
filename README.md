@@ -1,610 +1,412 @@
-# DealFinder Pro
+# DealFinder Pro v2.0
 
-**Automated Real Estate Investment Deal Discovery & Analysis Platform**
+**AI-Powered Property Intelligence Platform for GoHighLevel Users**
 
-DealFinder Pro is an enterprise-grade automation system that finds undervalued real estate investment opportunities, analyzes them using advanced algorithms, and automatically syncs high-quality deals to your GoHighLevel CRM with intelligent buyer matching.
+Modern Next.js + FastAPI architecture with autonomous AI agents that monitor properties 24/7 and deliver matches directly to your GoHighLevel CRM.
 
 ---
 
-## Features
+## What is DealFinder Pro?
 
-### Core Capabilities
-- **Multi-Source Property Discovery**: Scrapes Realtor.com, integrates with MLS databases
-- **Advanced Analysis Engine**: 100-point scoring system evaluating price, market position, financials, and more
-- **Intelligent Buyer Matching**: Automatically matches properties to buyer criteria in GoHighLevel
-- **Full GHL Integration**: Creates opportunities, triggers workflows, sends SMS alerts
-- **Automated Reporting**: Daily Excel and HTML email reports with property analysis
-- **Production-Ready**: Database connection pooling, error handling, logging, and monitoring
+DealFinder Pro is an **intelligence layer** that sits between property data sources and your GoHighLevel CRM. Instead of building another dashboard you'll never use, we provide a **3-minute conversational setup** that creates autonomous agents monitoring properties forever.
 
-### Investment Analysis
-- Price per sqft vs market comparison
-- Days on market and seller motivation indicators
-- Cap rate and cash-on-cash return calculations
-- ARV (After Repair Value) estimation
-- Flip profit potential analysis
-- Distressed property detection
+**Core Innovation:** Chat with Claude AI for 3 minutes → Agent monitors 24/7 → Matches appear in GoHighLevel → You never need to return to our site.
 
 ---
 
 ## Quick Start
 
-### 1. Prerequisites
-
-- **Python 3.9+**
-- **PostgreSQL 13+** (or MySQL 8+)
-- **GoHighLevel Account** (optional but recommended)
-- **Chrome/Firefox** (for web scraping)
-
-### 2. Installation
-
+### Step 1: Start Backend API
 ```bash
-# Clone repository
-git clone <repository-url>
-cd "Real Estate Valuation"
-
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Copy environment template
-cp .env.example .env
-
-# Edit .env with your credentials
-nano .env  # or use your preferred editor
+cd "/Users/mikekwak/Real Estate Valuation"
+./start_api.sh
 ```
+Backend: http://localhost:8000
+Docs: http://localhost:8000/docs
 
-### 3. Database Setup
-
+### Step 2: Start Frontend
 ```bash
-# Create PostgreSQL database
-createdb dealfinder
-
-# Initialize schema
-psql dealfinder < database/schema.sql
-
-# (Optional) Load sample data
-psql dealfinder < database/sample_data.sql
+cd dealfinder-web
+./start-dev.sh
 ```
+Frontend: http://localhost:3000
 
-### 4. Configuration
-
-Edit `config.json` to customize:
-
-- **Target locations** (ZIP codes, cities)
-- **Search criteria** (price range, bedrooms, property types)
-- **Scoring weights** (customize what matters most)
-- **GHL settings** (pipeline IDs, workflow IDs)
-- **Notification preferences**
-
-See `config.json` for detailed configuration options.
-
-### 5. Environment Variables
-
-Required variables in `.env`:
-
-```bash
-# Database
-DB_USER=postgres
-DB_PASSWORD=your_password
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=dealfinder
-
-# GoHighLevel (if using GHL integration)
-GHL_API_KEY=your_api_key
-GHL_LOCATION_ID=your_location_id
-
-# Email notifications
-EMAIL_USERNAME=your_email@gmail.com
-EMAIL_PASSWORD=your_app_password
-```
-
-See `.env.example` for all available options.
-
----
-
-## Usage
-
-### Daily Workflow (Recommended)
-
-Run the complete automated workflow:
-
-```bash
-python main.py --full-workflow
-```
-
-This will:
-1. Scrape properties from configured locations
-2. Import from MLS (if configured)
-3. Deduplicate and enrich data
-4. Analyze and score all properties
-5. Store in database
-6. Import buyers from GoHighLevel
-7. Match properties to buyers
-8. Create GHL opportunities for high-scoring deals
-9. Generate Excel and HTML reports
-10. Send email and SMS notifications
-
-### Testing Commands
-
-```bash
-# Test database connection
-python main.py --test-db
-
-# Test GoHighLevel connection
-python main.py --test-ghl
-
-# Test scraping a single ZIP code
-python main.py --test-scrape 90210
-
-# Analyze a single property
-python main.py --analyze-property PROP_12345
-
-# Generate reports from existing data
-python main.py --generate-report
-```
-
-### Scheduling (Production)
-
-**Using cron (Linux/Mac):**
-
-```bash
-# Edit crontab
-crontab -e
-
-# Add daily execution at 8 AM
-0 8 * * * cd /path/to/Real\ Estate\ Valuation && /path/to/venv/bin/python main.py --full-workflow >> logs/cron.log 2>&1
-```
-
-**Using Task Scheduler (Windows):**
-
-1. Open Task Scheduler
-2. Create Basic Task
-3. Set trigger: Daily at 8:00 AM
-4. Action: Start Program
-   - Program: `C:\path\to\venv\Scripts\python.exe`
-   - Arguments: `main.py --full-workflow`
-   - Start in: `C:\path\to\Real Estate Valuation`
-
-**Using Python schedule library:**
-
-```python
-# Create scheduler.py
-import schedule
-import time
-from main import DealFinderPro
-
-def run_workflow():
-    app = DealFinderPro()
-    app.run_full_workflow()
-
-schedule.every().day.at("08:00").do(run_workflow)
-
-while True:
-    schedule.run_pending()
-    time.sleep(60)
-```
+### Step 3: Create Your First Agent
+1. Visit http://localhost:3000
+2. Click "Start with AI"
+3. Chat with Claude for 3 minutes
+4. Agent created and monitoring starts!
 
 ---
 
 ## Architecture
 
-### Module Structure
+### System Overview
+
+```
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│   Next.js    │→ │   FastAPI    │→ │   Python     │
+│   Frontend   │  │   REST API   │  │   Modules    │
+│   (Vercel)   │  │  (Railway)   │  │  (Core)      │
+└──────────────┘  └──────────────┘  └──────────────┘
+Port 3000         Port 8000         In-process
+```
+
+### Technology Stack
+
+**Frontend:**
+- Next.js 14 (App Router, TypeScript)
+- Tailwind CSS v3
+- Framer Motion (animations)
+- Axios (HTTP client)
+
+**Backend:**
+- FastAPI (Python 3.9+)
+- Pydantic v2 (validation)
+- Uvicorn (ASGI server)
+- APScheduler (background jobs)
+
+**Core Modules (unchanged from v1):**
+- AI Agent (Claude integration)
+- Search Agent (autonomous monitoring)
+- Agent Manager (lifecycle management)
+- Database (SQLite/PostgreSQL)
+- GHL Connector (GoHighLevel API)
+
+---
+
+## Key Features
+
+### 1. AI-Powered Setup (3 minutes)
+- Conversational interface with Claude
+- Natural language property criteria
+- Automatic criteria extraction
+- Visual review before creation
+
+### 2. Autonomous Monitoring (24/7)
+- Background agents check every 4 hours
+- Smart matching algorithm (0-100 score)
+- Duplicate detection
+- Price reduction tracking
+
+### 3. GoHighLevel Integration
+- Auto-create opportunities in GHL
+- Match scoring and reasons in notes
+- Workflow triggers
+- SMS/Email notifications
+
+### 4. Zero Daily Maintenance
+- Set it and forget it
+- Matches appear in GHL automatically
+- No dashboard to check
+- No manual data entry
+
+---
+
+## Product Strategy
+
+### Old Architecture (Streamlit v1)
+- ❌ 7-page dashboard
+- ❌ Complex form filling (15 min setup)
+- ❌ User manages everything in our app
+- ❌ Daily checking required
+
+### New Architecture (Next.js v2)
+- ✅ 2-page wizard (landing + setup)
+- ✅ AI conversation (3 min setup)
+- ✅ User manages in GoHighLevel
+- ✅ Zero daily maintenance
+
+**Strategic Shift:** From "we are the dashboard" to "we are the intelligence layer"
+
+---
+
+## Project Structure
 
 ```
 Real Estate Valuation/
-├── main.py                          # Main orchestrator
-├── config.json                      # Configuration
-├── .env                            # Environment variables (not in git)
+├── api/                          # FastAPI Backend
+│   ├── main.py                  # Main application (21 endpoints)
+│   ├── models/schemas.py        # Pydantic models
+│   └── routes/
+│       ├── agents.py            # Agent CRUD
+│       ├── chat.py              # AI conversation
+│       └── properties.py        # Property search
 │
-├── modules/                         # Core modules
-│   ├── database.py                 # Database manager
-│   ├── scraper.py                  # Realtor.com scraper
-│   ├── data_enrichment.py          # Data cleaning & enrichment
-│   ├── analyzer.py                 # Property analysis
-│   ├── scorer.py                   # Opportunity scoring
-│   ├── reporter.py                 # Report generation
-│   ├── sync_manager.py             # GHL sync manager
-│   └── notifier.py                 # Email/SMS notifications
+├── dealfinder-web/              # Next.js Frontend
+│   ├── app/
+│   │   ├── page.tsx            # Landing page
+│   │   └── setup/page.tsx      # AI wizard
+│   └── lib/
+│       ├── api-client.ts        # API integration
+│       └── types.ts             # TypeScript types
 │
-├── integrations/                    # External integrations
-│   ├── ghl_connector.py            # GoHighLevel API client
-│   ├── ghl_workflows.py            # GHL workflow automation
-│   ├── ghl_buyer_matcher.py        # Buyer matching engine
-│   └── mls_connector.py            # MLS database connector
+├── modules/                      # Core Python Modules
+│   ├── ai_agent.py              # Claude integration
+│   ├── search_agent.py          # Autonomous monitoring
+│   ├── agent_manager.py         # Lifecycle management
+│   ├── client_db.py             # Database operations
+│   └── property_scanner.py      # Property data collection
 │
-├── database/                        # Database files
-│   ├── schema.sql                  # Database schema
-│   └── migrations/                 # Schema migrations
+├── integrations/                 # External Integrations
+│   └── ghl_connector.py         # GoHighLevel API
 │
-├── templates/                       # Email templates
-│   ├── daily_report.html           # Daily report template
-│   └── property_card.html          # Property card template
+├── docs/                         # Documentation
+│   ├── PRD_V2.md                # Product requirements
+│   ├── ARCHITECTURE_V2.md       # Technical architecture
+│   ├── USER_JOURNEY_V2.md       # User experience
+│   ├── MIGRATION_GUIDE.md       # V1 → V2 changes
+│   └── DOCUMENTATION_INDEX.md   # Master index
 │
-├── tests/                          # Test suite
-│   ├── test_integration.py         # Integration tests
-│   └── test_units.py              # Unit tests
+├── database/                     # Database
+│   └── dealfinder.db            # SQLite (dev)
 │
-├── logs/                           # Application logs
-├── reports/                        # Generated reports
-└── backups/                        # Database backups
-```
-
-### Data Flow
-
-1. **Acquisition**: Scraper → Raw property data
-2. **Enrichment**: Data Enrichment → Cleaned, standardized data
-3. **Analysis**: Analyzer + Scorer → Scored opportunities
-4. **Storage**: Database Manager → PostgreSQL
-5. **Matching**: Buyer Matcher → Property-buyer matches
-6. **Sync**: GHL Workflows → Opportunities in GoHighLevel
-7. **Reporting**: Report Generator → Excel + HTML reports
-8. **Notification**: Notifier → Email + SMS alerts
-
----
-
-## Configuration Guide
-
-### Search Criteria
-
-```json
-"search_criteria": {
-  "target_locations": ["90210", "Beverly Hills, CA"],
-  "days_back": 30,
-  "property_types": ["single_family", "multi_family"],
-  "min_bedrooms": 3,
-  "price_range": {
-    "min": 200000,
-    "max": 1000000
-  }
-}
-```
-
-### Scoring Weights
-
-Customize what factors matter most (must total 100):
-
-```json
-"scoring_weights": {
-  "price_advantage": 30,      # Below market pricing
-  "days_on_market": 20,       # Seller motivation
-  "financial_returns": 25,    # Cap rate, profit potential
-  "condition_price": 15,      # Distressed indicators
-  "location_quality": 10      # Area desirability
-}
-```
-
-### GHL Automation Rules
-
-```json
-"automation_rules": {
-  "auto_create_opportunity": true,
-  "min_score_for_opportunity": 75,
-  "hot_deal_threshold": 90,
-  "auto_match_buyers": true,
-  "auto_send_sms": true
-}
+├── data/                         # Property Data
+│   └── latest_scan.json         # Latest property scan
+│
+└── archive/                      # Old Documentation
+    └── streamlit_v1_docs/       # Archived Streamlit docs
 ```
 
 ---
 
-## GoHighLevel Setup
+## Documentation
 
-See **[GHL_SETUP_GUIDE.md](GHL_SETUP_GUIDE.md)** for complete setup instructions including:
+### Getting Started
+- **START_HERE.md** - Quick start guide (5 min)
+- **NEXTJS_SETUP.md** - Detailed setup instructions
 
-- API key generation
-- Custom field creation
-- Pipeline configuration
-- Workflow setup
-- Buyer profile management
+### Product Documentation
+- **docs/PRD_V2.md** - Product vision and requirements
+- **docs/USER_JOURNEY_V2.md** - User experience flow
+- **docs/MIGRATION_GUIDE.md** - Streamlit → Next.js migration
 
----
+### Technical Documentation
+- **docs/ARCHITECTURE_V2.md** - System architecture
+- **docs/DOCUMENTATION_INDEX.md** - Master navigation
 
-## Database Schema
-
-### Main Tables
-
-**properties**: All discovered properties with analysis
-- Property details (address, price, size, etc.)
-- Analysis results (scores, metrics, recommendations)
-- GHL sync status
-
-**buyers**: Imported from GoHighLevel
-- Contact information
-- Budget and preferences
-- Target locations and property types
-
-**property_matches**: Property-buyer matches
-- Match scores and reasons
-- Notification tracking
-
-**sync_logs**: Synchronization history
-- Sync type, status, statistics
-- Error tracking
-
-See `database/schema.sql` for complete schema.
+### API Reference
+- **http://localhost:8000/docs** - Interactive API documentation (FastAPI)
 
 ---
 
-## Scoring System
+## Key Differentiators
 
-DealFinder Pro uses a comprehensive 100-point scoring system:
+### vs Traditional Property Search Tools
+| Feature | Traditional | DealFinder Pro |
+|---------|-------------|----------------|
+| Setup Time | 15 minutes | 3 minutes |
+| Configuration | Complex forms | AI conversation |
+| Daily Maintenance | 15-30 min | 0 min |
+| Property Management | External site | Your GoHighLevel |
+| AI Intelligence | None | Claude-powered |
 
-### Score Components
-
-1. **Price Advantage (30 points max)**
-   - Compares price/sqft to market median
-   - 20%+ below market = 30 points
-   - 15-20% below = 25 points
-   - 10-15% below = 20 points
-
-2. **Days on Market (20 points max)**
-   - Indicates seller motivation
-   - 90+ days = 20 points
-   - 60-89 days = 15 points
-   - 30-59 days = 10 points
-
-3. **Financial Returns (25 points max)**
-   - Cap rate for rental properties
-   - Flip profit potential
-   - 10%+ cap rate = 25 points
-
-4. **Condition/Price Indicators (15 points max)**
-   - Price reductions
-   - Distressed keywords
-   - Below tax assessment
-
-5. **Location Quality (10 points max)**
-   - Area desirability
-   - School ratings
-   - Appreciation potential
-
-### Deal Quality Classifications
-
-- **90-100**: HOT DEAL (immediate action)
-- **75-89**: GOOD OPPORTUNITY (strong potential)
-- **60-74**: FAIR DEAL (worth reviewing)
-- **0-59**: PASS (doesn't meet criteria)
+### vs Building In-House
+- **Cost:** $50/mo vs $10K+ development
+- **Time:** 3 minutes vs weeks/months
+- **Maintenance:** Zero vs ongoing dev time
+- **AI Quality:** Claude API vs DIY
 
 ---
 
-## Reporting
+## User Experience
 
-### Daily Email Report
+### Setup Flow (3 minutes)
 
-Includes:
-- Summary statistics
-- Top 10 properties by score
-- Recent price reductions
-- Market insights by ZIP code
-- Workflow execution stats
+```
+1. Land on homepage
+   ↓
+2. Click "Start with AI"
+   ↓
+3. Chat with Claude:
+   AI: "What type of properties are you targeting?"
+   User: "Investment properties in San Diego, $600K-$1.2M"
+   AI: "Got it. What's your minimum size requirement?"
+   User: "At least 3 beds, 2 baths"
+   AI: "Perfect! One more question..."
+   ↓
+4. Review extracted criteria
+   📍 Locations: 92037, 92130
+   💰 Price Range: $600K - $1.2M
+   🏠 Property Size: 3+ beds, 2+ baths
+   ↓
+5. Enter name and click "Create Agent"
+   ↓
+6. Agent monitoring starts immediately!
+```
 
-### Excel Report
+### Daily Experience (zero work)
 
-Three sheets:
-1. **Top Deals**: Top 20 properties with key metrics
-2. **All Properties**: Complete dataset with analysis
-3. **Market Analysis**: Statistics grouped by ZIP code
-
-Reports are saved to `reports/` directory and optionally attached to email.
+```
+Morning: Wake up
+   ↓
+Check GoHighLevel
+   ↓
+See 2 new opportunities
+   ↓
+Review match scores and reasons
+   ↓
+Contact interested properties
+   ↓
+Done! (Agent continues monitoring 24/7)
+```
 
 ---
 
-## Troubleshooting
+## Success Metrics
 
-### Common Issues
+### Time Savings
+- **Setup:** 15 min → 3 min (80% reduction)
+- **Daily maintenance:** 15 min → 0 min (100% elimination)
+- **Monthly time:** 300+ min → 3 min (99% reduction)
 
-**Database connection fails:**
+### User Experience
+- **Configuration:** Forms → Conversation
+- **Property viewing:** Dashboard → GoHighLevel
+- **Notifications:** Manual check → Automatic alerts
+- **Match quality:** Generic → AI-scored with reasoning
+
+---
+
+## Development
+
+### Local Development
+
+**Terminal 1 (Backend):**
 ```bash
-# Check PostgreSQL is running
-pg_isready
+cd "/Users/mikekwak/Real Estate Valuation"
+./start_api.sh
 
-# Verify credentials in .env
-cat .env | grep DB_
-
-# Test connection
-python main.py --test-db
+# Or manually:
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements_api.txt
+uvicorn api.main:app --reload
 ```
 
-**GHL API errors:**
+**Terminal 2 (Frontend):**
 ```bash
-# Verify API key and location ID
-python main.py --test-ghl
+cd dealfinder-web
+./start-dev.sh
 
-# Check API key permissions in GHL settings
+# Or manually:
+npm install
+npm run dev
 ```
 
-**Scraping fails:**
+### Environment Variables
+
+**Backend (.env):**
 ```bash
-# Test single ZIP code
-python main.py --test-scrape 90210
-
-# Update Chrome/Firefox browser
-# Check for Realtor.com site changes
+ANTHROPIC_API_KEY=your_claude_api_key
+GHL_API_KEY=your_ghl_api_key
+GHL_LOCATION_ID=your_location_id
+DATABASE_URL=sqlite:///database/dealfinder.db
 ```
 
-**No properties found:**
-- Adjust search criteria in `config.json`
-- Increase `days_back` parameter
-- Verify target locations are valid
-- Check price range isn't too restrictive
+**Frontend (.env.local):**
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
 
-### Logs
-
-Check logs for detailed error information:
+### Testing
 
 ```bash
-# View today's log
-tail -f logs/app_$(date +%Y%m%d).log
+# Test backend API
+curl http://localhost:8000/health
 
-# Search for errors
-grep ERROR logs/app_*.log
+# Test agent creation
+curl -X POST http://localhost:8000/api/agents/ \
+  -H "Content-Type: application/json" \
+  -d '{"client_name": "Test", "criteria": {...}}'
 
-# View last 100 lines
-tail -100 logs/app_$(date +%Y%m%d).log
+# View API docs
+open http://localhost:8000/docs
 ```
 
 ---
 
-## Performance Optimization
+## Deployment
 
-### For Large Datasets
-
-1. **Increase database connection pool:**
-   ```json
-   "databases": {
-     "primary": {
-       "max_connections": 20
-     }
-   }
-   ```
-
-2. **Batch processing:**
-   ```json
-   "performance": {
-     "batch_size_analysis": 100,
-     "database_batch_insert": 200
-   }
-   ```
-
-3. **Concurrent scraping:**
-   ```json
-   "performance": {
-     "max_concurrent_scrapes": 10
-   }
-   ```
-
-### Reducing API Costs
-
-- Cache market data (24 hour default)
-- Limit GHL sync to high-scoring properties only
-- Use local market estimates instead of external APIs
-
----
-
-## Security Best Practices
-
-1. **Never commit .env file**
-   ```bash
-   # Verify .env is in .gitignore
-   git check-ignore .env
-   ```
-
-2. **Use environment variables for all secrets**
-
-3. **Restrict database access**
-   - Use read-only credentials for MLS
-   - Create dedicated user for application
-
-4. **Enable HTTPS for webhooks**
-
-5. **Rotate API keys regularly**
-
-6. **Backup database regularly**
-   ```bash
-   # Manual backup
-   pg_dump dealfinder > backups/backup_$(date +%Y%m%d).sql
-
-   # Automated backups (add to cron)
-   0 2 * * * pg_dump dealfinder > /path/to/backups/backup_$(date +\%Y\%m\%d).sql
-   ```
-
----
-
-## Advanced Features
-
-### Custom Scoring Rules
-
-Modify `modules/scorer.py` to implement custom scoring logic:
-
-```python
-def _calculate_custom_score(self, property_data: Dict) -> int:
-    """Your custom scoring logic"""
-    score = 0
-    # Your logic here
-    return score
-```
-
-### Additional Data Sources
-
-Add new scrapers in `modules/`:
-
-```python
-class ZillowScraper:
-    def scrape_listings(self, location: str):
-        # Implementation
-        pass
-```
-
-Then import in `main.py` and add to workflow.
-
-### Custom Notifications
-
-Extend `modules/notifier.py`:
-
-```python
-def send_slack_notification(self, message: str):
-    """Send notification to Slack"""
-    # Implementation
-    pass
-```
-
----
-
-## API Reference
-
-See individual module docstrings for detailed API documentation:
-
+### Frontend (Vercel)
 ```bash
-# View module documentation
-python -m pydoc modules.database
-python -m pydoc modules.analyzer
-python -m pydoc integrations.ghl_connector
+cd dealfinder-web
+vercel deploy --prod
 ```
 
----
-
-## Testing
-
-Run the test suite:
-
+### Backend (Railway)
 ```bash
-# Run all tests
-pytest tests/ -v
-
-# Run with coverage
-pytest tests/ --cov=modules --cov=integrations
-
-# Run specific test file
-pytest tests/test_integration.py -v
+railway up
 ```
 
----
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+See **docs/ARCHITECTURE_V2.md** for complete deployment guide.
 
 ---
 
-## Support
+## Roadmap
 
-For issues, questions, or feature requests:
+### Phase 1 ✅ (Complete)
+- FastAPI backend with 21 endpoints
+- Agent CRUD operations
+- AI chat with Claude
+- Property search
 
-1. Check existing documentation
-2. Search closed issues
-3. Open a new issue with:
-   - Detailed description
-   - Steps to reproduce
-   - Log excerpts
-   - Configuration (sanitized)
+### Phase 2 ✅ (Complete)
+- Next.js frontend
+- Landing page with animations
+- AI setup wizard
+- Production build
+
+### Phase 3 🔜 (In Progress)
+- GHL opportunity auto-creation
+- Custom field mapping
+- Workflow integration
+- End-to-end testing
+
+### Phase 4 📅 (Planned)
+- Production deployment
+- Domain setup
+- Monitoring (Sentry)
+- User onboarding
+
+### Phase 5 🔮 (Future)
+- User authentication
+- Billing integration
+- Agent feedback loop
+- Mobile app
+
+---
+
+## Migration from V1
+
+If you were using the old Streamlit dashboard, see **docs/MIGRATION_GUIDE.md** for:
+
+- What changed (UI/UX complete overhaul)
+- What stayed same (core modules 100% preserved)
+- File structure changes
+- Testing checklist
+- Rollback plan
+
+**Good news:** No data migration needed! Your existing SQLite database works as-is.
+
+---
+
+## Support & Resources
+
+**Documentation:**
+- Complete docs in `docs/` folder
+- Master index: `docs/DOCUMENTATION_INDEX.md`
+- Quick start: `START_HERE.md`
+
+**API Documentation:**
+- Interactive: http://localhost:8000/docs
+- All 21 endpoints documented
+
+**External Links:**
+- [Next.js Docs](https://nextjs.org/docs)
+- [FastAPI Docs](https://fastapi.tiangolo.com/)
+- [GoHighLevel API](https://highlevel.stoplight.io/)
+- [Claude API](https://docs.anthropic.com/)
 
 ---
 
@@ -616,31 +418,22 @@ Proprietary - All Rights Reserved
 
 ## Changelog
 
-### Version 1.0.0 (2024)
-- Initial release
-- Complete workflow automation
-- GoHighLevel integration
-- Advanced scoring system
-- Buyer matching
-- Automated reporting
+### Version 2.0.0 (October 2025)
+- Complete architecture transformation (Streamlit → Next.js + FastAPI)
+- AI-powered conversational setup
+- GHL-first product strategy
+- 2-page wizard (vs 7-page dashboard)
+- 99% reduction in user time investment
 
----
-
-## Roadmap
-
-### Planned Features
-
-- [ ] Mobile app for deal notifications
-- [ ] Machine learning price prediction
-- [ ] Neighborhood crime data integration
-- [ ] School rating integration
-- [ ] Walk score integration
-- [ ] Multi-market expansion tools
-- [ ] Comparative market analysis (CMA) generation
-- [ ] Automated property valuation model (AVM)
-- [ ] Integration with Zapier/Make
-- [ ] REST API for custom integrations
+### Version 1.0.0 (October 2025)
+- Initial Streamlit dashboard
+- Manual configuration forms
+- 7-page interface
+- PostgreSQL integration
+- GHL connector
 
 ---
 
 **Built with ❤️ for Real Estate Investors**
+
+**Powered by:** Next.js | FastAPI | Claude AI | GoHighLevel

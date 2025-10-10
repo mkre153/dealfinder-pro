@@ -66,3 +66,27 @@ tmp/
 credentials.json
 secrets.json
 api_keys.txt
+
+# Next.js (Frontend)
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Frontend environment
+dealfinder-web/.env.local
+dealfinder-web/.env.production
+dealfinder-web/.env.development
+
+# Database (keep structure, ignore data in dev)
+database/*.db
+database/*.db-journal
+database/*.db-wal
+!database/.gitkeep

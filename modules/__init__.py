@@ -11,9 +11,27 @@ This package contains all core modules for DealFinder Pro:
 
 from .scraper import RealtorScraper
 from .data_enrichment import DataEnrichment
-from .database import DatabaseManager, DatabaseError
-from .schema_mapper import SchemaMapper, SchemaMapperError
-from .sync_manager import SyncManager, SyncError
+
+# Optional imports (database features not required for basic scanning)
+try:
+    from .database import DatabaseManager, DatabaseError
+    _database_available = True
+except ImportError:
+    DatabaseManager = None
+    DatabaseError = Exception
+    _database_available = False
+
+try:
+    from .schema_mapper import SchemaMapper, SchemaMapperError
+except ImportError:
+    SchemaMapper = None
+    SchemaMapperError = Exception
+
+try:
+    from .sync_manager import SyncManager, SyncError
+except ImportError:
+    SyncManager = None
+    SyncError = Exception
 
 __all__ = [
     'RealtorScraper',

@@ -130,7 +130,7 @@ with st.expander("🔍 Smart Filters", expanded=True):
         quality_options = st.multiselect(
             "Deal Quality",
             options=["HOT", "GOOD", "FAIR", "PASS"],
-            default=["HOT", "GOOD", "FAIR"],
+            default=["HOT", "GOOD", "FAIR", "PASS"],
             help="Filter by deal classification"
         )
 
@@ -142,13 +142,17 @@ with st.expander("🔍 Smart Filters", expanded=True):
                 min_price = int(prices.min())
                 max_price = int(prices.max())
 
+                # Default to $100K - $2M range (filters out rentals and ultra-luxury)
+                default_min = max(min_price, 100000)
+                default_max = min(max_price, 2000000)
+
                 price_range = st.slider(
                     "Price Range",
                     min_value=min_price,
                     max_value=max_price,
-                    value=(min_price, max_price),
+                    value=(default_min, default_max),
                     format="$%d",
-                    help="Filter by listing price"
+                    help="Filter by listing price (default: $100K-$2M)"
                 )
             else:
                 price_range = None
@@ -178,8 +182,8 @@ with st.expander("🔍 Smart Filters", expanded=True):
             "Min Opportunity Score",
             min_value=0,
             max_value=100,
-            value=75,
-            help="Minimum investment score"
+            value=10,
+            help="Minimum investment score (default: 10)"
         )
 
 # Apply filters

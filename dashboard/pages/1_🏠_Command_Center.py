@@ -20,6 +20,39 @@ from components.scheduler import get_scheduler
 
 st.set_page_config(page_title="Command Center", page_icon="🏠", layout="wide")
 
+# Load scan results from file into session state
+def load_scan_results():
+    """Load latest scan results from JSON file into session state"""
+    scan_file = project_root / 'data' / 'latest_scan.json'
+
+    if scan_file.exists():
+        try:
+            with open(scan_file, 'r') as f:
+                data = json.load(f)
+
+            # Only load if this is new data (check timestamp)
+            file_timestamp = data.get('timestamp', '')
+            session_timestamp = st.session_state.get('last_scan_timestamp', '')
+
+            if file_timestamp != session_timestamp:
+                st.session_state['scraped_properties'] = data.get('properties', [])
+                st.session_state['last_scan_timestamp'] = file_timestamp
+                return True
+        except Exception as e:
+            st.error(f"Error loading scan results: {e}")
+
+    return False
+
+# Initialize session state
+if 'scraped_properties' not in st.session_state:
+    st.session_state['scraped_properties'] = []
+
+if 'watched_properties' not in st.session_state:
+    st.session_state['watched_properties'] = []
+
+# Load any new scan results
+load_scan_results()
+
 # Custom CSS
 st.markdown("""
 <style>
@@ -182,11 +215,14 @@ with col2:
             try:
                 result = scheduler.run_manual_scan()
                 if result['status'] in ['completed', 'completed_with_errors']:
+                    # Load the new scan results
+                    load_scan_results()
                     st.success(f"✅ Scan complete! Found {result['properties_found']} properties")
+                    st.rerun()  # Reload page to show updated metrics
                 else:
                     st.error(f"❌ Scan failed: {result.get('errors', ['Unknown error'])}")
             except Exception as e:
-                st.error(f"Error running scan: {e}")
+                st.error(f"❌ Scan failed: [{type(e).__name__}] {str(e)}")
 
 with col3:
     if st.button("⚙️ Configure Criteria", use_container_width=True):

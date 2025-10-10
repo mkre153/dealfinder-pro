@@ -14,6 +14,7 @@ beautifulsoup4>=4.12.0        # HTML parsing
 selenium>=4.15.0              # Browser automation
 webdriver-manager>=4.0.0      # Automatic WebDriver management
 lxml>=4.9.0                   # XML/HTML parser
+homeharvest==0.3.25           # Realtor.com scraper (Python 3.9 compatible)
 
 # ========================================
 # DATABASE
@@ -46,7 +47,9 @@ jinja2>=3.1.2                # HTML templating for emails
 # ========================================
 # AGENTIC SYSTEM (AI/ML)
 # ========================================
-anthropic>=0.18.0            # Claude AI (recommended)
+anthropic>=0.39.0            # Claude AI for conversational agent (REQUIRED for AI Assistant)
+# Perplexity AI integration uses requests library (already included above)
+# No additional package needed - uses Perplexity API via HTTP
 openai>=1.10.0               # OpenAI GPT-4 (alternative)
 # chromadb>=0.4.0            # Vector database for semantic memory (optional)
 # sentence-transformers>=2.2.0  # For embeddings (optional)
@@ -87,10 +90,13 @@ gunicorn>=21.2.0             # WSGI server (if deploying as web service)
 supervisor>=4.2.5            # Process management
 
 # ========================================
-# SCHEDULER (Optional)
+# SCHEDULER & DASHBOARD
 # ========================================
 schedule>=1.2.0              # Job scheduling (alternative to cron)
-# APScheduler>=3.10.0        # Advanced scheduling
+APScheduler>=3.10.0          # Advanced scheduling (required)
+streamlit>=1.28.0            # Dashboard UI
+twilio>=8.10.0               # SMS notifications
+plotly>=5.18.0               # Interactive charts
 
 # ========================================
 # MONITORING (Optional)

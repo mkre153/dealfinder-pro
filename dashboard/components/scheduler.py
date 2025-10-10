@@ -9,7 +9,12 @@ from datetime import datetime
 import logging
 import json
 from pathlib import Path
-from typing import Dict, List, Callable
+from typing import Dict, List, Callable, Optional
+
+# Python 3.9 compatibility
+import sys
+if sys.version_info < (3, 10):
+    from typing import Dict as dict, List as list
 
 logger = logging.getLogger(__name__)
 
@@ -119,19 +124,28 @@ class PropertyScanner:
             # Analyze properties
             if all_properties:
                 try:
-                    # Initialize analyzer (without db for now)
-                    # analyzer = PropertyAnalyzer(None, config)
+                    # Score properties using simple scorer
+                    from modules.simple_scorer import SimplePropertyScorer
 
-                    # For now, just store raw properties
-                    # In full implementation, would analyze each property
+                    scorer = SimplePropertyScorer(config)
+                    scored_properties = scorer.score_properties(all_properties)
 
-                    scan_result['properties_found'] = len(all_properties)
+                    scan_result['properties_found'] = len(scored_properties)
                     scan_result['status'] = 'completed'
 
-                    # Store in session state or database
-                    # This will be handled by the dashboard
+                    # Store in temporary file for dashboard to pick up
+                    # (Can't directly modify session state from background thread)
+                    temp_file = Path(__file__).parent.parent.parent / 'data' / 'latest_scan.json'
+                    temp_file.parent.mkdir(exist_ok=True)
 
-                    logger.info(f"Scan completed: {len(all_properties)} properties found")
+                    with open(temp_file, 'w') as f:
+                        json.dump({
+                            'timestamp': scan_result['timestamp'],
+                            'properties': scored_properties
+                        }, f, indent=2)
+
+                    logger.info(f"Scan completed: {len(scored_properties)} properties found and scored")
+                    logger.info(f"Results saved to: {temp_file}")
 
                 except Exception as e:
                     logger.error(f"Error analyzing properties: {e}")
