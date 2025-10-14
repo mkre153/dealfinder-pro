@@ -258,6 +258,21 @@ class SearchAgent:
             score += 7
             reasons.append(f"🚿 {bathrooms} bathrooms")
 
+        # Privy intelligence bonus (from Privy.pro CSV imports)
+        if prop.get('absentee_owner'):
+            score += 10
+            reasons.append(f"🏚️ Absentee owner - easier to motivate")
+
+        if prop.get('investor_owned'):
+            score += 5
+            owner_name = prop.get('owner_name', 'Unknown')
+            reasons.append(f"💼 Investor-owned: {owner_name[:40]}")
+
+        if prop.get('flip_history'):
+            score += 5
+            prev_owner = prop.get('previous_owner', 'Unknown')
+            reasons.append(f"🔄 Flip history (prev: {prev_owner[:30]})")
+
         # Investment metrics bonus (bonus points, can exceed 100)
         if self.criteria.get('investment_type') == 'cash_flow':
             monthly_cashflow = prop.get('monthly_cashflow', 0)

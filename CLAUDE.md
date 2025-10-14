@@ -147,8 +147,10 @@ Real Estate Valuation/
 │   ├── client_db.py             # SQLite/PostgreSQL operations
 │   └── property_scanner.py      # Realtor.com scraping
 │
-├── integrations/                 # External APIs (UNCHANGED)
-│   └── ghl_connector.py         # GoHighLevel API client
+├── integrations/                 # External APIs
+│   ├── ghl_connector.py         # GoHighLevel API client (v2)
+│   ├── sdmls_connector.py       # San Diego MLS API (RESO Web API 2.0) - NEW
+│   └── perplexity_agent.py      # Perplexity AI for web search (in modules/)
 │
 ├── database/                     # Database (UNCHANGED)
 │   └── dealfinder.db            # SQLite (dev only)
@@ -309,6 +311,123 @@ CREATE TABLE property_matches (
     FOREIGN KEY (agent_id) REFERENCES search_agents(agent_id)
 );
 ```
+
+### Data Sources & MLS Integration
+
+**Official MLS Data via SDMLS (San Diego MLS)**
+
+DealFinder Pro supports integration with **San Diego MLS (SDMLS)** for official real estate data through the RESO Web API 2.0 standard.
+
+**Why SDMLS vs Web Scraping:**
+
+| Feature | SDMLS MLS API | Web Scraping (HomeHarvest) |
+|---------|---------------|----------------------------|
+| **Data Quality** | Official MLS data | Public listing data |
+| **Field Count** | 200+ fields | 20-30 fields |
+| **Update Speed** | Real-time | Daily scraping |
+| **Reliability** | 99.9% uptime | CAPTCHA/rate limits |
+| **Legal Status** | Fully compliant | Gray area |
+| **Cost** | $50-100/month | Free |
+| **Coverage** | All San Diego County | Realtor.com only |
+
+**RESO Web API 2.0 Integration:**
+
+The `integrations/sdmls_connector.py` module provides:
+- **RESO-compliant OData queries** - Standard filtering and pagination
+- **Data Dictionary 2.0 mapping** - 200+ standardized property fields
+- **Bearer token authentication** - Secure API access via MLS Router
+- **Test mode** - Mock data for development without credentials
+- **Automatic field transformation** - Maps RESO fields to internal schema
+
+**Setup Process:**
+
+1. **Prerequisites:** Active SDMLS membership (or broker with SDMLS access)
+2. **Request Access:** Contact SDMLS Data Access at https://sdmls.com/nmsubscribers/data-access/
+3. **Choose Tier:** Tiered Vendor Access Program ($25-50/month) recommended for small operations
+4. **Sign Agreement:** Broker Data Access Agreement (standard MLS terms)
+5. **Receive Credentials:** MLS Router Bearer token (500+ character JWT)
+6. **Configure:** Add `SDMLS_API_TOKEN` to `.env` file
+7. **Test:** Run `python3 integrations/sdmls_connector.py` to verify connection
+
+**Complete setup guide:** See `SDMLS_API_SETUP.md` for step-by-step instructions
+
+**Using SDMLS Connector:**
+
+```python
+from integrations.sdmls_connector import SDMLSConnector
+
+# Initialize connector
+connector = SDMLSConnector(test_mode=False)  # Use real API
+
+# Test connection
+result = connector.test_connection()
+print(result)  # {'success': True, 'message': 'Successfully connected...'}
+
+# Search properties
+properties = connector.search_properties(
+    zip_codes=['92126', '92127', '92128', '92129', '92130', '92131'],
+    price_min=500000,
+    price_max=2000000,
+    bedrooms_min=3,
+    bathrooms_min=2,
+    property_types=['Residential'],
+    status='Active',
+    days_back=30,
+    limit=1000
+)
+
+print(f"Found {len(properties)} properties from SDMLS")
+
+# Get property details
+property_details = connector.get_property_details(listing_key='12345678')
+
+# Get property photos
+media = connector.get_property_media(listing_key='12345678')
+```
+
+**RESO Field Mapping Examples:**
+
+RESO Web API uses standardized field names that are automatically mapped to DealFinder Pro's internal schema:
+
+```python
+# RESO → Internal Mapping
+'ListingKey' → 'mls_number'
+'UnparsedAddress' → 'street_address'
+'PostalCode' → 'zip_code'
+'ListPrice' → 'list_price'
+'BedroomsTotal' → 'bedrooms'
+'BathroomsTotalInteger' → 'bathrooms'
+'LivingArea' → 'square_feet'
+'DaysOnMarket' → 'days_on_market'
+'StandardStatus' → 'status'
+'ListAgentFullName' → 'listing_agent_name'
+# ... 190+ more fields
+```
+
+**Hybrid Strategy (Recommended):**
+
+For maximum coverage and reliability:
+1. **Primary:** SDMLS MLS API for San Diego County properties
+2. **Backup:** HomeHarvest scraping for other markets (Las Vegas, etc.)
+3. **Future:** Additional MLS integrations (ARMLS for Arizona, CRMLS for Southern California)
+
+**Current Implementation Status:**
+- ✅ SDMLS connector created (`integrations/sdmls_connector.py`)
+- ✅ RESO Web API 2.0 compliance
+- ✅ Test mode for development
+- ✅ Complete field mapping (200+ fields)
+- ⏳ Pending: SDMLS API credentials (contact SDMLS to request access)
+- ⏳ Pending: Integration into property scanner (Phase 4)
+
+**Legacy Data Source:**
+
+For non-San Diego markets or until SDMLS credentials are obtained, DealFinder Pro uses:
+- **HomeHarvest** - Python library that scrapes Realtor.com
+- **Scraper:** `modules/scraper.py`
+- **Scanner:** `modules/property_scanner.py`
+- **Data Storage:** `data/latest_scan.json`
+
+This will remain as a fallback data source for markets without MLS API access.
 
 ### API Endpoints (21 Total)
 
@@ -517,6 +636,9 @@ ANTHROPIC_API_KEY=sk-ant-...
 # GoHighLevel
 GHL_API_KEY=your_ghl_api_key
 GHL_LOCATION_ID=your_ghl_location_id
+
+# SDMLS (San Diego MLS) - Official MLS Data
+SDMLS_API_TOKEN=your_mls_router_token  # See SDMLS_API_SETUP.md
 
 # Database
 DATABASE_URL=sqlite:///database/dealfinder.db  # Dev
@@ -911,8 +1033,9 @@ For deep dives, see:
 - **docs/USER_JOURNEY_V2.md** - Complete user experience flow (20 min read)
 - **docs/AGENTIC_SYSTEM_V2.md** - Autonomous agent deep dive with flowcharts (30 min read)
 - **docs/MIGRATION_GUIDE.md** - v1 → v2 changes (15 min read)
+- **SDMLS_API_SETUP.md** - San Diego MLS API setup guide (10 min read)
 
-**Total onboarding time:** ~2 hours for complete understanding
+**Total onboarding time:** ~2.5 hours for complete understanding
 
 ---
 
