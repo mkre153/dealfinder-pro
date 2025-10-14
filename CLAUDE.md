@@ -81,6 +81,12 @@ Port 3000                 Port 8000                 In-Process
 - Independent frontend/backend scaling
 - Standard ports (3000/8000)
 
+**Migration Complete (October 2025):**
+- All Streamlit components archived in `archive/streamlit_v1_dashboard/`
+- `streamlit` and `plotly` dependencies commented out in requirements.txt
+- Launch script `run_dashboard.sh` archived
+- v2.0 is the ONLY active codebase
+
 **Key Insight:** Users already have GoHighLevel. They don't need ANOTHER dashboard. They need intelligence delivered TO their existing workflow.
 
 ### 2. Why Core Modules Are Unchanged
@@ -158,8 +164,11 @@ Real Estate Valuation/
 │   ├── AGENTIC_SYSTEM_V2.md     # Agent system deep dive
 │   └── MIGRATION_GUIDE.md       # v1 → v2 migration
 │
-└── archive/                      # Archived Docs
-    └── streamlit_v1_docs/       # Old Streamlit documentation
+└── archive/                      # Archived v1.0 Components
+    ├── streamlit_v1_docs/       # Old Streamlit documentation
+    ├── streamlit_v1_dashboard/  # Old Streamlit app (7 pages)
+    │   └── dashboard/           # Complete v1.0 dashboard code
+    └── run_dashboard.sh         # Old Streamlit launch script
 ```
 
 ---
