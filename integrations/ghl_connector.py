@@ -1,6 +1,7 @@
 """
-GoHighLevel API Connector
-Handles all direct API communication with GHL v1 API with rate limiting and error handling.
+GoHighLevel API Connector (v2 API)
+Handles all direct API communication with GHL v2 API with rate limiting and error handling.
+Base URL: https://services.leadconnectorhq.com
 """
 
 import requests
@@ -74,19 +75,20 @@ class GoHighLevelConnector:
 
     def __init__(self, api_key: str, location_id: str, test_mode: bool = False):
         """
-        Initialize GHL connector
+        Initialize GHL connector (v2 API)
 
         Args:
-            api_key: GHL API key (Bearer token)
+            api_key: GHL API key (Private Integration Token - PIT)
             location_id: GHL location ID
             test_mode: If True, log actions but don't make actual API calls
         """
         self.api_key = api_key
         self.location_id = location_id
-        self.base_url = "https://rest.gohighlevel.com/v1"
+        self.base_url = "https://services.leadconnectorhq.com"
         self.headers = {
             "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Version": "2021-07-28"
         }
         self.rate_limiter = GHLRateLimiter()
         self.test_mode = test_mode
@@ -196,7 +198,7 @@ class GoHighLevelConnector:
 
     def test_connection(self) -> bool:
         """
-        Validate API key and connection
+        Validate API key and connection (v2 API)
 
         Returns:
             True if connection is valid
@@ -206,9 +208,9 @@ class GoHighLevelConnector:
                 self.logger.info("[TEST MODE] Connection test - simulated success")
                 return True
 
-            # Try to get custom fields as a simple test
-            self.get_custom_fields()
-            self.logger.info("GHL connection test successful")
+            # Test by getting location details
+            self._request("GET", f"/locations/{self.location_id}")
+            self.logger.info("GHL v2 connection test successful")
             return True
         except GHLAPIError as e:
             self.logger.error(f"GHL connection test failed: {e.message}")
@@ -370,11 +372,11 @@ class GoHighLevelConnector:
 
     def create_opportunity(self, opportunity_data: Dict) -> Dict:
         """
-        Create new opportunity
+        Create new opportunity (v2 API)
 
         Args:
-            opportunity_data: Must include pipelineId, name, pipelineStageId
-                Optional: monetaryValue, status, assignedTo, customFields, contactId
+            opportunity_data: Must include pipelineId, name, pipelineStageId, contactId
+                Optional: monetaryValue, status, assignedTo, customFields
 
         Returns:
             Created opportunity with ID
