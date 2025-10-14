@@ -1,7 +1,10 @@
-# DealFinder Pro - Project Context for Claude Code
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **Last Updated:** October 2025
 **Architecture Version:** 2.0 (Next.js + FastAPI)
+**GHL API Version:** v2 (Private Integration Token)
 
 ---
 

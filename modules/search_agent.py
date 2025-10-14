@@ -4,14 +4,19 @@ Continuously monitors new property scans for matches based on client criteria
 """
 
 import json
+import os
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 import logging
+from dotenv import load_dotenv
 
 from modules.client_db import get_db
 from integrations.ghl_connector import GoHighLevelConnector
 from integrations.ghl_buyer_matcher import BuyerMatcher
+
+# Load environment variables
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
@@ -65,10 +70,22 @@ class SearchAgent:
         self.ghl_connector = None
         self.buyer_matcher = None
         try:
-            self.ghl_connector = GoHighLevelConnector()
-            # Get GHL contact ID from client data
-            client_data = self.db.get_client(self.client_id)
-            self.ghl_contact_id = client_data.get('ghl_contact_id') if client_data else None
+            # Get GHL credentials from environment
+            ghl_api_key = os.getenv('GHL_API_KEY')
+            ghl_location_id = os.getenv('GHL_LOCATION_ID')
+
+            if ghl_api_key and ghl_location_id:
+                self.ghl_connector = GoHighLevelConnector(
+                    api_key=ghl_api_key,
+                    location_id=ghl_location_id,
+                    test_mode=False
+                )
+                # Get GHL contact ID from client data
+                client_data = self.db.get_client(self.client_id)
+                self.ghl_contact_id = client_data.get('ghl_contact_id') if client_data else None
+                logger.info(f"GHL integration enabled for agent {self.agent_id}")
+            else:
+                logger.warning(f"GHL credentials not found in environment variables")
         except Exception as e:
             logger.warning(f"GHL integration not available: {e}")
 
